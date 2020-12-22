@@ -50,7 +50,7 @@ func TestParse(t *testing.T) {
 				},
 			},
 		},
-    {
+		{
 			desc: "ex4.html",
 			name: "ex4.html",
 			want: []*Link{
@@ -77,7 +77,7 @@ func TestParse(t *testing.T) {
 
 			for i := range got {
 				if *got[i] != *tc.want[i] {
-					t.Errorf("Parse() result %d got:%v, want:%v", i, got[i], tc.want[i])
+					t.Errorf("Parse() result %d got:%v, want:%v", i, *got[i], *tc.want[i])
 				}
 			}
 		})

@@ -18,7 +18,6 @@ func removeEmpty(ss []string) []string {
 		if strings.TrimSpace(s) == "" {
 			continue
 		}
-
 		r = append(r, s)
 	}
 	return r
@@ -52,19 +51,20 @@ func Parse(r io.Reader) ([]*Link, error) {
 	}
 
 	var links []*Link
-	var f func(*html.Node)
-	f = func(n *html.Node) {
+	var collectLinks func(*html.Node)
+	collectLinks = func(n *html.Node) {
 		if n.Type == html.ElementNode && n.Data == "a" {
 			l := &Link{
 				HREF: getHREF(n.Attr),
 				Text: getText(n),
 			}
 			links = append(links, l)
-		}
-		for c := n.FirstChild; c != nil; c = c.NextSibling {
-			f(c)
+		} else {
+			for c := n.FirstChild; c != nil; c = c.NextSibling {
+				collectLinks(c)
+			}
 		}
 	}
-	f(doc)
+	collectLinks(doc)
 	return links, nil
 }
